@@ -15,9 +15,9 @@ import base64
 
 # ------------- 用户配置 -------------
 # 飞书机器人应用配置
-FS_APP_ID = os.environ.get("FEISHU_APP_ID") or "xxxx_xxxxxxxxxx"
-FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET") or "xxxxxxxxxxxxxxxxxxxxxx"
-FS_CHAT_ID = os.environ.get("FEISHU_CHAT_ID") or "oc_xxxxxxxxxxxxxxxxxxxxx"  # 指定群组ID
+FS_APP_ID = os.environ.get("FEISHU_APP_ID", "xxxx_xxxxxxxxxx")
+FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "xxxxxxxxxxxxxxxxxxxxxx")
+FS_CHAT_ID = os.environ.get("FEISHU_CHAT_ID", "oc_xxxxxxxxxxxxxxxxxxxxx")  # 指定群组ID
 
 # ------------- 用户配置 -------------
 
@@ -259,9 +259,9 @@ for size in ["_UHD.jpg", "_1920x1080.jpg"]:
                 f.write(chunk)
         # 下载成功后推送到GitHub仓库
         # ----------- GitHub推送配置 -----------
-        GITHUB_REPO = os.environ.get("GITHUB_REPO") or "yourusername/yourrepo"
-        GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH") or "main"
-        GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN") or "ghp_xxxxxxxxxxxxxxxxxxxxx"
+        GITHUB_REPO = os.environ.get("GITHUB_REPO", "yourusername/yourrepo")
+        GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
+        GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "ghp_xxxxxxxxxxxxxxxxxxxxx")
         GITHUB_TARGET_PATH = f"images/{YEAR_MONTH}/{TODAY}.jpg"
         try:
             github_push_image(SAVE_PATH, GITHUB_REPO, GITHUB_BRANCH, GITHUB_TOKEN, GITHUB_TARGET_PATH)
