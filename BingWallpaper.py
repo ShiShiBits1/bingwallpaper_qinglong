@@ -11,12 +11,14 @@ import sys
 import json
 import requests
 from datetime import datetime
+import base64
 
 # ------------- 用户配置 -------------
 # 飞书机器人应用配置
-FS_APP_ID = os.getenv("FEISHU_APP_ID") or "xxxx_xxxxxxxxxx"
-FS_APP_SECRET = os.getenv("FEISHU_APP_SECRET") or "xxxxxxxxxxxxxxxxxxxxxx"
-FS_CHAT_ID = "oc_xxxxxxxxxxxxxxxxxxxxx"  # 指定群组ID
+FS_APP_ID = os.environ.get("FEISHU_APP_ID") or "xxxx_xxxxxxxxxx"
+FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET") or "xxxxxxxxxxxxxxxxxxxxxx"
+FS_CHAT_ID = os.environ.get("FEISHU_CHAT_ID") or "oc_xxxxxxxxxxxxxxxxxxxxx"  # 指定群组ID
+
 # ------------- 用户配置 -------------
 
 TIMEOUT = 20
@@ -217,6 +219,36 @@ except Exception as e:
     sys.exit(1)
 
 # 2. 下载图片
+def github_push_image(image_path, repo, branch, token, target_path):
+    """
+    将本地图片推送到GitHub仓库
+    :param image_path: 本地图片路径
+    :param repo: 仓库名（如 username/repo ）
+    :param branch: 分支名（如 main ）
+    :param token: GitHub Token
+    :param target_path: 仓库内目标路径（如 images/2024-06-01.jpg ）
+    """
+    # 读取图片内容并编码为base64
+    with open(image_path, "rb") as f:
+        content = base64.b64encode(f.read()).decode()
+    api_url = f"https://api.github.com/repos/{repo}/contents/{target_path}"
+    headers = {
+        "Authorization": f"token {token}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "message": f"Add Bing wallpaper {os.path.basename(image_path)}",
+        "content": content,
+        "branch": branch
+    }
+    # 检查目标文件是否已存在
+    r = requests.get(api_url, headers=headers)
+    if r.status_code == 200 and "sha" in r.json():
+        data["sha"] = r.json()["sha"]
+    r = requests.put(api_url, headers=headers, data=json.dumps(data), timeout=TIMEOUT)
+    print(f"[GitHub推送] 响应: {r.status_code} {r.text}")
+    return r.json()
+
 for size in ["_UHD.jpg", "_1920x1080.jpg"]:
     img_url = f"https://www.bing.com{urlbase}{size}"
     try:
@@ -225,6 +257,17 @@ for size in ["_UHD.jpg", "_1920x1080.jpg"]:
         with open(SAVE_PATH, "wb") as f:
             for chunk in r.iter_content(1024):
                 f.write(chunk)
+        # 下载成功后推送到GitHub仓库
+        # ----------- GitHub推送配置 -----------
+        GITHUB_REPO = os.environ.get("GITHUB_REPO") or "yourusername/yourrepo"
+        GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH") or "main"
+        GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN") or "ghp_xxxxxxxxxxxxxxxxxxxxx"
+        GITHUB_TARGET_PATH = f"images/{YEAR_MONTH}/{TODAY}.jpg"
+        try:
+            github_push_image(SAVE_PATH, GITHUB_REPO, GITHUB_BRANCH, GITHUB_TOKEN, GITHUB_TARGET_PATH)
+        except Exception as e:
+            fs_send_text_card(f"❌[GitHub推送] 失败: {e}")
+        # ----------- GitHub推送配置 -----------
         break
     except Exception:
         continue
