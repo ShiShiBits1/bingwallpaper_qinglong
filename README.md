@@ -52,13 +52,12 @@ SORT_ID     = 1                          # 分类ID
 ### BingWallpaper.py 配置
 编辑文件中的以下参数或设置环境变量：
 ```python
-FS_APP_ID = os.environ.get("FEISHU_APP_ID") or "xxxx_xxxxxxxxxx"  # 飞书应用ID
-FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET") or "xxxxxxxxxxxxxxxxxxxxxx"  # 飞书应用密钥
-FS_CHAT_ID = os.environ.get("FEISHU_CHAT_ID") or "oc_xxxxxxxxxxxxxxxxxxxxx"  # 飞书群组ID
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")  # GitHub访问Token
-GITHUB_REPO = os.environ.get("GITHUB_REPO")    # GitHub仓库名
-GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH") # 分支名
-GITHUB_PATH = os.environ.get("GITHUB_PATH")        # 上传目标路径
+FS_APP_ID = os.environ.get("FEISHU_APP_ID", "xxxx_xxxxxxxxxx")  # 飞书应用ID
+FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "xxxxxxxxxxxxxxxxxxxxxx")  # 飞书应用密钥
+FS_CHAT_ID = os.environ.get("FEISHU_CHAT_ID", "oc_xxxxxxxxxxxxxxxxxxxxx")  # 飞书群组ID
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "ghp_xxxxxxxxxxxxxxxxxxxxx")  # GitHub访问Token
+GITHUB_REPO = os.environ.get("GITHUB_REPO", "yourusername/yourrepo")    # GitHub仓库名
+GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main") # 分支名
 ```
 > 推荐优先使用 `os.environ.get()` 获取环境变量，兼容青龙面板环境。
 
