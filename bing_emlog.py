@@ -6,12 +6,13 @@
 """
 import datetime
 import requests
+import os
 
 # ========== 只需修改以下 4 项 ==========
-DOMAIN      = "https://emlog.xxxx.com"      # 结尾不要 /
-API_KEY     = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-AUTHOR_UID  = 1                          # 作者 UID
-SORT_ID     = 1                          # 分类 ID
+EMLOG_DOMAIN      = os.environ.get("EMLOG_DOMAIN", "https://emlog.xxxx.com")      # 结尾不要 /
+EMLOG_API_KEY     = os.environ.get("EMLOG_API_KEY", "xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+EMLOG_AUTHOR_UID  = int(os.environ.get("EMLOG_AUTHOR_UID", 1))                          # 作者 UID
+EMLOG_SORT_ID     = int(os.environ.get("EMLOG_SORT_ID", 1))                          # 分类 ID
 # =======================================
 
 DATE   = datetime.datetime.now()
@@ -59,15 +60,15 @@ content = f"""
 
 # 3. 发布文章
 payload = {
-    "api_key": API_KEY,
+    "api_key": EMLOG_API_KEY,
     "title": f"Bing 每日壁纸 {TODAY}",
     "content": content,
-    "author_uid": AUTHOR_UID,
-    "sort_id": SORT_ID,
+    "author_uid": EMLOG_AUTHOR_UID,
+    "sort_id": EMLOG_SORT_ID,
     "draft": "n",
     "auto_cover": "y"
 }
-r = requests.post(f"{DOMAIN}/?rest-api=article_post", data=payload, timeout=20)
+r = requests.post(f"{EMLOG_DOMAIN}/?rest-api=article_post", data=payload, timeout=20)
 r.raise_for_status()
 resp = r.json()
 if resp.get("code") != 0:
