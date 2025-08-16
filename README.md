@@ -52,13 +52,13 @@ SORT_ID     = 1                          # 分类ID
 ### BingWallpaper.py 配置
 编辑文件中的以下参数或设置环境变量：
 ```python
-FS_APP_ID = os.environ.get("FEISHU_APP_ID") or os.getenv("FEISHU_APP_ID") or "xxxx_xxxxxxxxxx"  # 飞书应用ID
-FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET") or os.getenv("FEISHU_APP_SECRET") or "xxxxxxxxxxxxxxxxxxxxxx"  # 飞书应用密钥
-FS_CHAT_ID = "oc_xxxxxxxxxxxxxxxxxxxxx"  # 飞书群组ID
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN")  # GitHub访问Token
-GITHUB_REPO = os.environ.get("GITHUB_REPO") or os.getenv("GITHUB_REPO")    # GitHub仓库名
-GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH") or os.getenv("GITHUB_BRANCH")  # 分支名
-GITHUB_PATH = os.environ.get("GITHUB_PATH") or os.getenv("GITHUB_PATH")        # 上传目标路径
+FS_APP_ID = os.environ.get("FEISHU_APP_ID") or "xxxx_xxxxxxxxxx"  # 飞书应用ID
+FS_APP_SECRET = os.environ.get("FEISHU_APP_SECRET") or "xxxxxxxxxxxxxxxxxxxxxx"  # 飞书应用密钥
+FS_CHAT_ID = os.environ.get("FEISHU_CHAT_ID") or "oc_xxxxxxxxxxxxxxxxxxxxx"  # 飞书群组ID
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")  # GitHub访问Token
+GITHUB_REPO = os.environ.get("GITHUB_REPO")    # GitHub仓库名
+GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH") # 分支名
+GITHUB_PATH = os.environ.get("GITHUB_PATH")        # 上传目标路径
 ```
 > 推荐优先使用 `os.environ.get()` 获取环境变量，兼容青龙面板环境。
 
@@ -103,3 +103,4 @@ GITHUB_PATH = os.environ.get("GITHUB_PATH") or os.getenv("GITHUB_PATH")        #
 
 ## 联系方式
 如有问题或建议，请联系项目维护者。
+
